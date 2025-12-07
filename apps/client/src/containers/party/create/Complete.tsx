@@ -56,19 +56,25 @@ const PartyCreateCompleteContainer: React.FC<Props> = ({ data }) => {
           height={300}
           className="mb-4 aspect-party rounded-xl"
         />
-        <textarea
+        <div
           className={cx(
-            "w-full h-80 resize-none text-center text-xl placeholder:text-gray-3",
+            "w-full text-center text-xl",
             data.fontStyle,
             partyThemeConverter(data.theme as PartyTheme).backgroundColor,
             getTextColor(
               partyThemeConverter(data.theme as PartyTheme).backgroundColor,
             ),
           )}
-          value={data.content}
-          readOnly
         />
-        {/* From 입력 */}
+        <Typography
+          variant="b18"
+          className={cx(
+            "whitespace-pre-wrap text-center my-10",
+            data.fontStyle,
+          )}
+        >
+          {data.content}
+        </Typography>
         <div className="flex items-center gap-2">
           <Typography
             element="span"

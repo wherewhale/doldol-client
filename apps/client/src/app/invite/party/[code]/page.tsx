@@ -1,7 +1,7 @@
 "use client";
 
 import { withAuth } from "@/components/HOC/withAuth";
-import PaperInviteContainer from "@/containers/paper/Invite";
+import PartyInviteContainer from "@/containers/party/Invite";
 import { use } from "react";
 
 const InvitedPartyPage = ({
@@ -10,7 +10,7 @@ const InvitedPartyPage = ({
   params: Promise<{ code: string }>;
 }) => {
   const { code } = use(params);
-  return <PaperInviteContainer code={code} />;
+  return <PartyInviteContainer code={code} />;
 };
 
 export default withAuth(InvitedPartyPage, true);

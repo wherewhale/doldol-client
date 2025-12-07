@@ -1,3 +1,4 @@
+import { PartyComment } from "./party.d";
 import { PartyTheme } from "@/enum/party.enum";
 
 /** 초대장 생성 */
@@ -32,4 +33,23 @@ export interface PartyCreateResponse {
   theme: string;
   fontStyle: string;
   comments: PartyComment[];
+}
+
+export interface CreatePartyCommentRequest {
+  author: string;
+  content: string;
+}
+
+export interface PartyCommentListRequest {
+  // cursorId: number | null;
+  // size: number;
+  // sortDirection: PaperListSort;
+  code: string;
+}
+
+export interface PartyCommentResponse {
+  commentId: number;
+  author: string;
+  content: string;
+  createdAt: string;
 }

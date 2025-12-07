@@ -23,6 +23,7 @@ export { KakaoSymbolLogo } from "./KakaoSymbolLogo";
 export { LinkLine } from "./LinkLine";
 export { LockFill } from "./LockFill";
 export { LockLine } from "./LockLine";
+export { MapPinLine } from "./MapPinLine";
 export { NaverSymbolLogo } from "./NaverSymbolLogo";
 export { NextFill } from "./NextFill";
 export { Note } from "./Note";
