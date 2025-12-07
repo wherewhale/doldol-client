@@ -61,6 +61,9 @@ module.exports = {
       dahyun: ["Ownglyph_ParkDaHyun"],
     },
     extend: {
+      aspectRatio: {
+        party: "5 / 3",
+      },
       gridTemplateColumns: {
         16: "repeat(16, minmax(0, 1fr))",
       },

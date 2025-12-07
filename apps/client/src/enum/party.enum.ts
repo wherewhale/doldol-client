@@ -1,0 +1,7 @@
+export enum PartyTheme {
+  DEFAULT = "DEFAULT",
+  BIRTHDAY = "BIRTHDAY",
+  CHRISTMAS = "CHRISTMAS",
+  YEAR_END = "YEAR_END",
+  NEW_YEAR = "NEW_YEAR",
+}
