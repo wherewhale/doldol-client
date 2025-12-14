@@ -1,6 +1,7 @@
 "use client";
 
 import { withAuth } from "@/components/HOC/withAuth";
+import PartyListContainer from "@/containers/party/PartyList";
 import { ArrowSLineUp } from "@icons/ArrowSLineUp";
 import { Button } from "@ui/components";
 
@@ -21,8 +22,7 @@ const PartyPage = () => {
         onClick={onScrollToTop}
         icon={{ DefaultComponent: ArrowSLineUp }}
       />
-      초대장 리스트 페이지 가져오기
-      {/* <PaperListContainer /> */}
+      <PartyListContainer />
     </div>
   );
 };

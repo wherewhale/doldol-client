@@ -1,3 +1,4 @@
+import { Dayjs } from "dayjs";
 import { PartyComment } from "./party.d";
 import { PartyTheme } from "@/enum/party.enum";
 
@@ -21,10 +22,10 @@ export interface PartyComment {
   createdAt: string;
 }
 
-export interface PartyCreateResponse {
+export interface Party {
   inviteId: number;
   title: string;
-  eventDateTime: string;
+  eventDateTime: Dayjs;
   location: string;
   locationLink: string;
   content: string;
@@ -40,11 +41,23 @@ export interface CreatePartyCommentRequest {
   content: string;
 }
 
+export interface PartyListRequest {
+  cursorId: number | null;
+  size: number;
+}
+
+export interface PartyListResponse {
+  data: Party[];
+  size: number;
+  nextCursor: number;
+  hasNext: boolean;
+  empty: boolean;
+}
+
 export interface PartyCommentListRequest {
-  // cursorId: number | null;
-  // size: number;
-  // sortDirection: PaperListSort;
-  code: string;
+  inviteCode: string;
+  cursorId: number | null;
+  size: number;
 }
 
 export interface PartyCommentResponse {
