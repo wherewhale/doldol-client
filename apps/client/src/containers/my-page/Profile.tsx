@@ -58,10 +58,10 @@ const ProfileContainer = () => {
             <Icon icon={ArrowSLineRight} color="black" />
           </div>
         </Link>
-        <Link href={"/paper/create"}>
+        <Link href={"/party"}>
           <div className="flex justify-between px-6 mt-4">
             <div className="flex gap-10">
-              <Typography variant="b18-bold">새로 만들기</Typography>
+              <Typography variant="b18-bold">모임 초대장 만들기</Typography>
             </div>
             <Icon icon={ArrowSLineRight} color="black" />
           </div>
