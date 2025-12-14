@@ -6,7 +6,7 @@ import { ErrorDTO } from "@/types/error";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError, isAxiosError } from "axios";
 import { useCreatePartyForm } from "@/hooks/form/useCreatePartyForm";
-import { PartyCreateResponse, PartyRequest } from "@/types/party";
+import { Party, PartyRequest } from "@/types/party";
 import { postParty } from "@/services/party";
 import { PartyTheme } from "@/enum/party.enum";
 import { getTextColor } from "@/utils/messageStyle";
@@ -14,7 +14,7 @@ import Image from "next/image";
 import { partyThemeConverter } from "@/utils/party";
 
 interface Props {
-  onNext: (data: PartyCreateResponse) => void;
+  onNext: (data: Party) => void;
 }
 
 const PartyCreateContainer: React.FC<Props> = ({ onNext }) => {

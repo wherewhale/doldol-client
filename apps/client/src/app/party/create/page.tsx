@@ -1,8 +1,7 @@
 "use client";
 
 import { withAuth } from "@/components/HOC/withAuth";
-import { PaperCreateResponse } from "@/types/paper";
-import { PartyCreateResponse } from "@/types/party";
+import { Party } from "@/types/party";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 
@@ -21,9 +20,9 @@ const Content = {
 
 const PartyCreatePage = () => {
   const [stage, setStage] = useState<PartyCreateStage>("create");
-  const [pageInfo, setPageInfo] = useState<PartyCreateResponse | null>(null);
+  const [pageInfo, setPageInfo] = useState<Party | null>(null);
 
-  const onNext = (data: PartyCreateResponse) => {
+  const onNext = (data: Party) => {
     setPageInfo(data);
     setStage("complete");
   };

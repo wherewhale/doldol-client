@@ -2,15 +2,15 @@ import { Button, Notify, Typography } from "@ui/components";
 
 import Link from "next/link";
 import dayjs from "dayjs";
-import { PartyCreateResponse } from "@/types/party";
 import cx from "clsx";
 import { getTextColor } from "@/utils/messageStyle";
 import { partyThemeConverter } from "@/utils/party";
 import { PartyTheme } from "@/enum/party.enum";
 import Image from "next/image";
+import { Party } from "@/types/party";
 
 interface Props {
-  data: PartyCreateResponse;
+  data: Party;
 }
 
 const PartyCreateCompleteContainer: React.FC<Props> = ({ data }) => {
