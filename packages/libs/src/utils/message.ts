@@ -42,6 +42,9 @@ export const ERROR_MESSAGES = {
   partyLocationLinkInvalid: "장소 링크는 필수 입력입니다.",
   senderRequired: "단체명을 입력해주세요.",
 
+  commentAuthorRequired: "작성자 이름을 입력해주세요.",
+  commentContentRequired: "댓글 내용을 입력해주세요.",
+
   /** 기타 */
   blockRecirect:
     "작성하신 내용이 저장되지 않았습니다. 이 페이지를 떠나시겠습니까?",

@@ -25,8 +25,14 @@ export const getPartyInvite = (code: string) => {
 };
 
 export const getPartyComments = (code: PartyCommentListRequest) => {
-  return apiClient.get<PartyCommentResponse[]>(
+  return apiClient.get<PartyCommentResponse>(
     `/invites/${code.inviteCode}/comments`,
+    {
+      params: {
+        cursorId: code.cursorId,
+        size: code.size,
+      },
+    },
   );
 };
 

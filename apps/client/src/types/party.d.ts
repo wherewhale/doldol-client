@@ -1,5 +1,4 @@
 import { Dayjs } from "dayjs";
-import { PartyComment } from "./party.d";
 import { PartyTheme } from "@/enum/party.enum";
 
 /** 초대장 생성 */
@@ -17,9 +16,13 @@ export interface PartyRequest {
 export interface PartyComment {
   commentId: number;
   author: string;
-  userId: number;
   content: string;
   createdAt: string;
+}
+
+export interface CreateCommentRequest {
+  author: string;
+  content: string;
 }
 
 export interface Party {
@@ -61,8 +64,14 @@ export interface PartyCommentListRequest {
 }
 
 export interface PartyCommentResponse {
-  commentId: number;
-  author: string;
-  content: string;
-  createdAt: string;
+  data: {
+    commentId: number;
+    author: string;
+    content: string;
+    createdAt: string;
+  }[];
+  size: number;
+  nextCursor: number;
+  hasNext: boolean;
+  empty: boolean;
 }

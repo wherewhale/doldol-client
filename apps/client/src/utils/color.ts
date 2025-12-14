@@ -19,6 +19,16 @@ export const getColorFromString = (str: string): string => {
   return availableColors[index];
 };
 
+export const getCharacterFromString = (str: string): string => {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  const index = Math.abs(hash % 8);
+  return `/assets/images/party/comments/${index + 1}.png`;
+};
+
 export const getRandomColor = () => {
   const colors = [
     "bg-primary-brand",

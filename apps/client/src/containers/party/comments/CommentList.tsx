@@ -5,10 +5,15 @@ import { Button, Typography } from "@ui/components";
 import Image from "next/image";
 import { PlusLine } from "@icons/PlusLine";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { getPartyComments } from "@/services/party";
 import { CommentCard } from "@/components/party/comment/Card";
+import { useModal } from "@/hooks/useModal";
+import { CommentCreateModal } from "./CreateModal";
+import { CommentDetailModal } from "./DetailModal";
+
+type ModalType = "create" | "detail" | null;
 
 interface Props {
   code: string;
@@ -16,6 +21,28 @@ interface Props {
 
 const CommentListContainer = ({ code }: Props) => {
   const observerRef = useRef<HTMLDivElement | null>(null);
+  const [modalType, setModalType] = useState<ModalType>(null);
+  const { isOpened, onOpen, onClose } = useModal();
+  const [focusedComment, setFocusedComment] = useState<{
+    author: string;
+    content: string;
+  } | null>(null);
+
+  const openModal = (
+    type: ModalType,
+    comment?: { author: string; content: string },
+  ) => {
+    setModalType(type);
+
+    if (type === "detail") {
+      if (comment) {
+        setFocusedComment(comment);
+      }
+      onOpen();
+    }
+
+    onOpen();
+  };
 
   const {
     data,
@@ -28,19 +55,15 @@ const CommentListContainer = ({ code }: Props) => {
     queryKey: ["commentList", code],
     queryFn: ({ pageParam = 0 }) =>
       getPartyComments({
-        // cursorId: pageParam === 0 ? null : pageParam,
-        // size: 10,
-        // sortDirection: PaperListSort.LATEST,
-        // TODO: code로 변경
-        code: "4",
+        cursorId: pageParam === 0 ? null : pageParam,
+        size: 12,
+        inviteCode: code,
       }).then((res) => {
         return res.data;
       }),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
-      //   return lastPage.rollingPaper.hasNext
-      //     ? lastPage.rollingPaper.nextCursor
-      //     : undefined;
+      return lastPage.hasNext ? lastPage.nextCursor : undefined;
       return undefined;
     },
     retry: false,
@@ -70,102 +93,48 @@ const CommentListContainer = ({ code }: Props) => {
     return () => observer.disconnect();
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  const papers = data?.pages.flatMap((page) => page) ?? [];
-  //   const paperCount = data?.pages[0].paperCount ?? 0;
-  const commentCount = 0;
+  const comments = data?.pages.flatMap((comment) => comment.data) ?? [];
 
   return (
     <>
       <div className="flex justify-between mt-6">
-        <Link
-          href={`/invite/party/${code}/comments/create`}
+        <Button
+          variant={"outlined"}
+          size={"medium"}
+          icon={{ DefaultComponent: PlusLine }}
           className="ml-auto"
+          onClick={() => openModal("create")}
         >
-          <Button
-            variant={"outlined"}
-            size={"medium"}
-            icon={{ DefaultComponent: PlusLine }}
-          >
-            한 마디 남기기
-          </Button>
-        </Link>
+          한 마디 남기기
+        </Button>
       </div>
 
       <div className="grid grid-cols-3">
-        <CommentCard
-          data={{
-            commentId: 1,
-            author: "Author Name",
-            content: "This is a sample comment.",
-            createdAt: "2024-01-01T00:00:00Z",
-          }}
-          isOdd={true}
-        />
-        <CommentCard
-          data={{
-            commentId: 2,
-            author: "Author Name",
-            content: "This is a sample comment.",
-            createdAt: "2024-01-01T00:00:00Z",
-          }}
-          isOdd={false}
-        />
-        <CommentCard
-          data={{
-            commentId: 1,
-            author: "Author Name",
-            content: "This is a sample comment.",
-            createdAt: "2024-01-01T00:00:00Z",
-          }}
-          isOdd={true}
-        />
-        <CommentCard
-          data={{
-            commentId: 3,
-            author: "Author Name",
-            content: "This is a sample comment.",
-            createdAt: "2024-01-01T00:00:00Z",
-          }}
-          isOdd={false}
-        />
-        <CommentCard
-          data={{
-            commentId: 4,
-            author: "Author Name",
-            content: "This is a sample comment.",
-            createdAt: "2024-01-01T00:00:00Z",
-          }}
-          isOdd={true}
-        />
-        <CommentCard
-          data={{
-            commentId: 5,
-            author: "Author Name",
-            content: "This is a sample comment.",
-            createdAt: "2024-01-01T00:00:00Z",
-          }}
-          isOdd={false}
-        />
         <div ref={observerRef} className="h-10" />
       </div>
 
-      {commentCount > 0 && (
+      {comments.length > 0 && (
         <Typography variant={"b16"} className="mt-6">
-          총 <b>{commentCount}개</b>의 댓글이 있어요!
+          총 <b>{comments.length}개</b>의 댓글이 있어요!
         </Typography>
       )}
 
-      {commentCount > 0 ? (
-        <div className="flex flex-col gap-4 mt-4">
-          <CommentCard
-            data={{
-              commentId: 1,
-              author: "Author Name",
-              content: "This is a sample comment.",
-              createdAt: "2024-01-01T00:00:00Z",
-            }}
-            isOdd={true}
-          />
+      {comments.length > 0 ? (
+        <div className="grid grid-cols-3 gap-4 mt-4">
+          {comments.map((comment, index) => (
+            <li
+              className="cursor-pointer"
+              key={comment.commentId}
+              onClick={() =>
+                openModal("detail", {
+                  author: comment.author,
+                  content: comment.content,
+                })
+              }
+            >
+              <CommentCard data={comment} isOdd={index % 2 === 0} />
+            </li>
+          ))}
           <div ref={observerRef} className="h-10" />
         </div>
       ) : (
@@ -182,6 +151,23 @@ const CommentListContainer = ({ code }: Props) => {
             <br />한 마디가 없다 돌돌..
           </Typography>
         </div>
+      )}
+
+      {modalType === "create" && (
+        <CommentCreateModal
+          code={code}
+          isOpen={isOpened}
+          onClose={onClose}
+          refetchComments={refetch}
+        />
+      )}
+      {modalType === "detail" && (
+        <CommentDetailModal
+          isOpen={isOpened}
+          onClose={onClose}
+          author={focusedComment?.author || ""}
+          content={focusedComment?.content || ""}
+        />
       )}
     </>
   );

@@ -26,7 +26,7 @@ const PartyInviteContainer: React.FC<Props> = ({ code }) => {
   const { data: partyData, isLoading } = useQuery({
     queryKey: ["partyInvite", code],
     queryFn: async () => {
-      const response = await getPartyInvite("4");
+      const response = await getPartyInvite(code);
       return response.data;
     },
     retry: false,
