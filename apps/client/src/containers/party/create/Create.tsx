@@ -303,7 +303,7 @@ const PartyCreateContainer: React.FC<Props> = ({ onNext }) => {
             isSuccess
           }
         >
-          새로운 롤링페이퍼 생성
+          새로운 초대장 생성
         </Button>
       </form>
     </>
