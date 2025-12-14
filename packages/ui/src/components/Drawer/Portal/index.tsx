@@ -1,15 +1,22 @@
-'use client';
+"use client";
 
-import React, { MouseEventHandler, ReactNode, useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
-import { CSSTransition } from 'react-transition-group';
+import React, {
+  MouseEventHandler,
+  ReactNode,
+  useEffect,
+  useState,
+} from "react";
+import ReactDOM from "react-dom";
+import { CSSTransition } from "react-transition-group";
 
-import styles from './drawerPortal.module.scss';
+import styles from "./drawerPortal.module.scss";
+
+const Transition = CSSTransition as any;
 
 interface Props {
   isOpen: boolean;
   onClose?: MouseEventHandler;
-  position?: 'left' | 'right';
+  position?: "left" | "right";
   children: ReactNode;
 }
 
@@ -25,7 +32,7 @@ const DrawerPortal = ({ isOpen, onClose, children }: Props) => {
   return (
     <>
       {ReactDOM.createPortal(
-        <CSSTransition
+        <Transition
           in={isOpen}
           timeout={{ enter: 500, exit: 500 }}
           classNames={{
@@ -43,8 +50,8 @@ const DrawerPortal = ({ isOpen, onClose, children }: Props) => {
             <div className={styles.overlay} onClick={onClose} />
             <div className={styles.wrapper}>{children}</div>
           </aside>
-        </CSSTransition>,
-        document.getElementById('drawer-root') as HTMLDivElement,
+        </Transition>,
+        document.getElementById("drawer-root") as HTMLDivElement,
       )}
     </>
   );

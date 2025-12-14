@@ -1,13 +1,15 @@
-'use client';
+"use client";
 
-import React, { FC } from 'react';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import React, { FC } from "react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
-import styles from './carousel.module.scss';
-import cx from 'clsx';
-import { CarouselItem } from '../types/carousel';
+import styles from "./carousel.module.scss";
+import cx from "clsx";
+import { CarouselItem } from "../types/carousel";
+
+const ReactSlickSlider = Slider as any;
 
 interface Props {
   items: CarouselItem[];
@@ -19,7 +21,7 @@ const Carousel: FC<Props> = ({ items, classname }) => {
     dots: true,
     infinite: true,
     speed: 500,
-    dotsClass: 'customDot',
+    dotsClass: "customDot",
     slidesToShow: 1,
     slidesToScroll: 1,
     adaptiveHeight: true,
@@ -30,18 +32,18 @@ const Carousel: FC<Props> = ({ items, classname }) => {
   };
 
   return (
-    <Slider {...settings} className={cx(styles.container, classname)}>
+    <ReactSlickSlider {...settings} className={cx(styles.container, classname)}>
       {items.map((item, index) => (
         <a
           key={item.id || index}
           className={styles.wrapper}
           href={item.href}
-          target={item.isExternal ? '_blank' : '_self'}
+          target={item.isExternal ? "_blank" : "_self"}
         >
           <img src={item.src} alt={item.alt} />
         </a>
       ))}
-    </Slider>
+    </ReactSlickSlider>
   );
 };
 

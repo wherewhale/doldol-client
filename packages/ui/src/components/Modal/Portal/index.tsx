@@ -12,6 +12,8 @@ import { CSSTransition } from "react-transition-group";
 
 import styles from "./modalPortal.module.scss";
 
+const Transition = CSSTransition as any;
+
 interface Props {
   isOpen: boolean;
   onClose?: MouseEventHandler;
@@ -33,7 +35,7 @@ const ModalPortal = ({ isOpen, onClose, children }: Props) => {
   return (
     <>
       {ReactDOM.createPortal(
-        <CSSTransition
+        <Transition
           in={isOpen}
           nodeRef={nodeRef}
           timeout={{ enter: 100, exit: 120 }}
@@ -47,7 +49,7 @@ const ModalPortal = ({ isOpen, onClose, children }: Props) => {
             <div className={styles.overlay} onClick={onClose} />
             <div className={styles.wrapper}>{children}</div>
           </aside>
-        </CSSTransition>,
+        </Transition>,
         document.getElementById("modal-root") as HTMLDivElement,
       )}
     </>
