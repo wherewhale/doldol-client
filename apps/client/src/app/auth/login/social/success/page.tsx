@@ -1,23 +1,22 @@
 "use client";
 
 import { setTokens } from "@/utils/token";
-import { useRouter } from "next/navigation";
-import { use, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useEffect } from "react";
 
-const SocialLoginSuccessPage = ({
-  searchParams,
-}: {
-  searchParams: Promise<{ accessToken?: string; refreshToken?: string }>;
-}) => {
-  const { accessToken, refreshToken } = use(searchParams);
+const SocialLoginContent = () => {
+  const searchParams = useSearchParams();
   const router = useRouter();
 
   useEffect(() => {
+    const accessToken = searchParams.get("accessToken");
+    const refreshToken = searchParams.get("refreshToken");
+
     if (accessToken && refreshToken) {
       setTokens({ accessToken, refreshToken });
       router.replace("/");
     }
-  }, [accessToken, refreshToken]);
+  }, [searchParams, router]);
 
   return (
     <>
@@ -25,4 +24,13 @@ const SocialLoginSuccessPage = ({
     </>
   );
 };
+
+const SocialLoginSuccessPage = () => {
+  return (
+    <Suspense fallback={<div>페이지 로딩 중...</div>}>
+      <SocialLoginContent />
+    </Suspense>
+  );
+};
+
 export default SocialLoginSuccessPage;

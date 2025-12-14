@@ -2,19 +2,19 @@
 
 import { withAuth } from "@/components/HOC/withAuth";
 import MessageDetailContainer from "@/containers/paper/message/Detail";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { use, useEffect } from "react";
 
 const MessageDetailPage = ({
   params,
-  searchParams,
 }: {
   params: Promise<{ paperId: string }>;
-  searchParams: Promise<{ index?: string; type?: string }>;
 }) => {
   const router = useRouter();
   const { paperId } = use(params);
-  const { index, type } = use(searchParams);
+  const searchParams = useSearchParams();
+  const type = searchParams.get("type");
+  const index = searchParams.get("index");
 
   const isValidType = type === "send" || type === "receive";
   const isValidCursor = !!index;

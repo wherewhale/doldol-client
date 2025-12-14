@@ -1,38 +1,38 @@
 "use client";
 
-import React, { use, useState } from "react";
+import React, { Suspense, useState } from "react";
 
 import dynamic from "next/dynamic";
 import { RegisterSocialForm } from "@/interface/auth/register.interface";
 import { withNoAuth } from "@/components/HOC/withNoAuth";
+import { useSearchParams } from "next/navigation";
 
 type RegisterStage = "register" | "checkCode" | "complete";
 
 const Content = {
   register: dynamic(() => import("@/containers/auth/register/SocialRegister"), {
     ssr: false,
-    loading: () => <div>Loading...</div>, // 스켈레톤 대체
+    loading: () => <div>Loading...</div>,
   }),
   checkCode: dynamic(() => import("@/containers/auth/CheckEmailCode"), {
     ssr: false,
-    loading: () => <div>Loading...</div>, // 스켈레톤 대체
+    loading: () => <div>Loading...</div>,
   }),
   complete: dynamic(() => import("@/containers/auth/register/Complete"), {
     ssr: false,
-    loading: () => <div>Loading...</div>, // 스켈레톤 대체
+    loading: () => <div>Loading...</div>,
   }),
 };
 
-const AuthSocialRegisterPage = ({
-  searchParams,
-}: {
-  searchParams: Promise<{ socialId?: string; socialType?: string }>;
-}) => {
+const SocialRegisterContent = () => {
   const [stage, setStage] = useState<RegisterStage>("register");
   const [userData, setUserData] = useState<RegisterSocialForm | undefined>(
     undefined,
   );
-  const { socialId, socialType } = use(searchParams);
+
+  const searchParams = useSearchParams();
+  const socialId = searchParams.get("socialId");
+  const socialType = searchParams.get("socialType");
 
   const onNext = (data?: RegisterSocialForm) => {
     if (data) {
@@ -75,4 +75,13 @@ const AuthSocialRegisterPage = ({
   );
 };
 
+const AuthSocialRegisterPage = () => {
+  return (
+    <Suspense fallback={<div>페이지 로딩 중...</div>}>
+      <SocialRegisterContent />
+    </Suspense>
+  );
+};
+
+// 3. HOC는 최상위 컴포넌트에 적용
 export default withNoAuth(AuthSocialRegisterPage);

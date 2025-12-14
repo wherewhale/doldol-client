@@ -1,29 +1,40 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import {
   QueryClient,
   QueryClientProvider,
   HydrationBoundary,
+  DehydratedState, // 타입 추가
 } from "@tanstack/react-query";
 import { Toast } from "@ui/components";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      retry: 2,
-    },
-    mutations: {
-      retry: false,
-    },
-  },
-});
+export default function Providers({
+  children,
+  state,
+}: {
+  children: ReactNode;
+  state?: DehydratedState;
+}) {
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            refetchOnWindowFocus: false,
+            retry: 2,
+            staleTime: 60 * 1000,
+          },
+          mutations: {
+            retry: false,
+          },
+        },
+      }),
+  );
 
-export default function Providers({ children }: { children: ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
-      <HydrationBoundary>
+      <HydrationBoundary state={state}>
         {children}
         <Toast />
       </HydrationBoundary>

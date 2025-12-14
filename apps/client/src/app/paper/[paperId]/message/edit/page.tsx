@@ -14,7 +14,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Notify } from "@ui/components";
 import { AxiosError, isAxiosError } from "axios";
 import dynamic from "next/dynamic";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { use, useEffect, useState } from "react";
 
 type MessageEditStage =
@@ -47,13 +47,12 @@ const Content = {
 
 const MessageEditPage = ({
   params,
-  searchParams,
 }: {
   params: Promise<{ paperId: string }>;
-  searchParams: Promise<{ messageId?: string }>;
 }) => {
   const { paperId } = use(params);
-  const { messageId } = use(searchParams);
+  const searchParams = useSearchParams();
+  const messageId = searchParams.get("messageId");
   const router = useRouter();
   const [stage, setStage] = useState<MessageEditStage>("selectPerson");
   const [userName, setUserName] = useState<string | null>(null);

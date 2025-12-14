@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import MixpanelInitializer from "./MixpanelInitializer";
 import Providers from "./providers";
 import Script from "next/script";
+import { QueryClient, dehydrate } from "@tanstack/react-query";
 
 const BASE_URL = "https://doldol.wha1eson.co.kr";
 
@@ -36,11 +37,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const queryClient = new QueryClient();
+  const dehydratedState = dehydrate(queryClient);
+
   return (
     <html lang="ko">
       <head>
@@ -77,7 +81,7 @@ export default function RootLayout({
         </>
       </head>
       <body>
-        <Providers>
+        <Providers state={dehydratedState}>
           <MixpanelInitializer />
           {children}
           <div id="modal-root"></div>
